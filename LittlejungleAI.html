@@ -319,7 +319,18 @@ function goTo(id){
 // CHAT ADVISOR
 // ══════════════════════════════════════════════
 let hist=[], busy=false;
-function scrollChat(){const s=el('s-advisor');if(s)s.scrollTo({top:s.scrollHeight,behavior:'smooth'});}
+function scrollChat(){
+  const s=el('s-advisor');
+  if(!s)return;
+  // Force scroll to absolute bottom of the screen container
+  const doScroll=()=>{s.scrollTop=s.scrollHeight;};
+  // Fire immediately + multiple delayed attempts to catch after render
+  doScroll();
+  requestAnimationFrame(doScroll);
+  setTimeout(doScroll,100);
+  setTimeout(doScroll,300);
+  setTimeout(doScroll,600);
+}
 function qr(text){
   const i=el('chat-input');if(i){i.value=text;send();}
 }
@@ -331,13 +342,13 @@ function addMsg(role,html){
   const b=el('chat-box');if(!b)return;
   const d=document.createElement('div');d.className='cmsg '+(role==='user'?'user':'bot');
   d.innerHTML=`<div class="cmsg-who">${role==='user'?'You':'<span class="wdot"></span> Little Jungle AI'}</div><div class="bubble">${formatBold(html)}</div>`;
-  b.appendChild(d);setTimeout(scrollChat,50);
+  b.appendChild(d);scrollChat();
 }
 function showTyp(){
   const b=el('chat-box');if(!b)return;
   const d=document.createElement('div');d.className='typing-row';d.id='typ';
   d.innerHTML=`<div class="cmsg-who"><span class="wdot"></span> Little Jungle AI</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
-  b.appendChild(d);setTimeout(scrollChat,50);
+  b.appendChild(d);scrollChat();
 }
 function hideTyp(){el('typ')?.remove();}
 
