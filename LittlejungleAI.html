@@ -319,7 +319,7 @@ function goTo(id){
 // CHAT ADVISOR
 // ══════════════════════════════════════════════
 let hist=[], busy=false;
-function scrollChat(){const b=el('chat-box');if(b)b.scrollTop=b.scrollHeight;}
+function scrollChat(){const s=el('s-advisor');if(s)s.scrollTo({top:s.scrollHeight,behavior:'smooth'});}
 function qr(text){
   const i=el('chat-input');if(i){i.value=text;send();}
 }
